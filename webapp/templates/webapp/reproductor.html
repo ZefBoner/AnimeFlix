@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="video-player">
+    <video controls>
+        <source src="{{ episodio_url }}" type="video/mp4">
+        Tu navegador no admite la reproducción de video HTML5.
+    </video>
+</div>
+{% endblock %}
