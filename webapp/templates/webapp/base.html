@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Multimedia</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="/"><img src="{% static 'images/Logo.png' %}" alt="Logo"></a>
+            </div>
+            <div class="menu-icon" id="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/animes" class="nav-link">Animes</a></li>
+                <li><a href="#" class="nav-link">Cuenta</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Buscar...">
+                <button type="submit">Buscar</button>
+            </div>
+            <div class="login">
+                {% if user.is_authenticated %}
+                <p>Bienvenido, {{ user.username }}</p>
+                {% else %}
+                <a href="/login">Iniciar sesión</a>
+                <a href="/register">Registrarse</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <h2>Lista de Animes</h2>
+            <ul class="sidebar-list">
+                <li><a href="#">Naruto</a></li>
+                <li><a href="#">Attack on Titan</a></li>
+                <li><a href="#">One Piece</a></li>
+                <li><a href="#">Fullmetal Alchemist</a></li>
+                <li><a href="#">Death Note</a></li>
+                <li><a href="#">Sailor Moon</a></li>
+            </ul>
+        </aside>
+        <section class="main-content">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
+</main>
+
+<footer>
+    <p>© Anime Multimedia 2023 - Todos los derechos reservados</p>
+</footer>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

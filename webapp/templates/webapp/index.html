@@ -1,0 +1,38 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="main-content">
+	<h1>¡Bienvenido a Anime Multimedia!</h1>
+	<p>Disfruta de nuestro amplio catálogo de animes en alta calidad y con subtítulos en español.</p>
+	<div class="image-grid">
+		<div class="image-container">
+			<a href="#">
+				<img src="https://via.placeholder.com/400x200" alt="Anime 1">
+				<p class="image-caption">Pie de imagen 1</p>
+			</a>
+		</div>
+		<div class="image-container">
+			<a href="#">
+				<img src="https://via.placeholder.com/400x200" alt="Anime 2">
+				<p class="image-caption">Pie de imagen 2</p>
+			</a>
+		</div>
+		<div class="image-container">
+			<a href="#">
+				<img src="https://via.placeholder.com/400x200" alt="Anime 3">
+				<p class="image-caption">Pie de imagen 3</p>
+			</a>
+		</div>
+	</div>
+	<div class="pagination">
+		<a href="/">Anterior</a>
+		<a href="/">1</a>
+		<a href="/pagina_2">2</a>
+		<a href="/pagina_3">3</a>
+		<a href="/pagina_2">Siguiente</a>
+	</div>
+</section>
+
+{% endblock %}
