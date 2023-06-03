@@ -8,23 +8,23 @@
 	<p>Disfruta de nuestro amplio catálogo de animes en alta calidad y con subtítulos en español.</p>
 	<div class="image-grid">
 		<div class="image-container">
-			<a href="#">
+			<a href="{% url 'anime_detail' anime_id=1 %}">
 				<img src="https://via.placeholder.com/400x200" alt="Anime 1">
 				<p class="image-caption">Pie de imagen 1</p>
 			</a>
 		</div>
 		<div class="image-container">
-			<a href="#">
+			<a href="{% url 'anime_detail' anime_id=2 %}">
 				<img src="https://via.placeholder.com/400x200" alt="Anime 2">
 				<p class="image-caption">Pie de imagen 2</p>
 			</a>
 		</div>
 		<div class="image-container">
-			<a href="#">
+			<a href="{% url 'anime_detail' anime_id=3 %}">
 				<img src="https://via.placeholder.com/400x200" alt="Anime 3">
 				<p class="image-caption">Pie de imagen 3</p>
 			</a>
-		</div>
+		</div>	
 	</div>
 	<div class="pagination">
 		<a href="/">Anterior</a>

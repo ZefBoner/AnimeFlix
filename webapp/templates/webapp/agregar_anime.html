@@ -1,0 +1,29 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="agregar-anime">
+    <h2>Agregar un nuevo Anime</h2>
+    <form method="post" action="{% url 'agregar_anime' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_anime">ID del Anime:</label>
+            <input type="number" name="id_anime" id="id_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_anime">Nombre del Anime:</label>
+            <input type="text" name="nombre_anime" id="nombre_anime" required>
+        </div>
+        <button type="submit">Agregar</button>
+    </form>
+    
+    <!-- Mostrar los animes existentes -->
+    <h2>Animes existentes:</h2>
+    <ul>
+        {% for anime in animes %}
+        <li>{{ anime.nombre_anime }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
