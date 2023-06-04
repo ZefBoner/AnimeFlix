@@ -2,14 +2,27 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Animes, Usuarios
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.http import Http404
+
 
 def webapp(request):
     messages.get_messages(request)  # Obtener mensajes almacenados
     return render(request, 'webapp/index.html')
 
 def anime_detail(request, anime_id):
-    anime = get_object_or_404(Animes, id_anime=anime_id)
+    anime_dict = {
+        1: {'id_anime': 1, 'name': 'Anime 1', 'description': 'Descripción del Anime 1'},
+        2: {'id_anime': 2, 'name': 'Anime 2', 'description': 'Descripción del Anime 2'},
+        3: {'id_anime': 3, 'name': 'Anime 3', 'description': 'Descripción del Anime 3'}
+    }
+    
+    anime = anime_dict.get(anime_id)
+    
+    if anime is None:
+        raise Http404("El anime no existe")
+    
     return render(request, 'webapp/anime_detail.html', {'anime': anime})
+
 
 def agregar_anime(request):
     if request.method == 'POST':
