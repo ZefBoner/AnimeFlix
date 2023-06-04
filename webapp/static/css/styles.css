@@ -129,6 +129,9 @@ header {
   background-color: #ff80ab;
   transform: scale(1.1);
 }
+/* Estilos para formularios*/
+
+
 
 /* Estilos para pantallas pequeñas */
 @media only screen and (max-width: 600px) {
