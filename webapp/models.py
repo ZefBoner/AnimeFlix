@@ -1,26 +1,33 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.core.exceptions import ValidationError
+
 
 class Animes(models.Model):
-    id_anime = models.IntegerField(primary_key=True)
+    id_anime = models.AutoField(primary_key=True)
     nombre_anime = models.CharField(max_length=100)
+    descripcion_anime = models.CharField(max_length=500, default='no.jpg')
+    imagen_anime = models.CharField(max_length=50, default='no.jpg')
+    portada_anime = models.CharField(max_length=50, default='no.jpg')
 
     def __str__(self):
         return self.nombre_anime
 
-class Usuarios(AbstractUser):
-    nombre = models.CharField(max_length=50)
-    usuario = models.CharField(max_length=50, unique=True)  # Añade unique=True para evitar nombres de usuario duplicados
-    apellido = models.CharField(max_length=50)
-    contraseña = models.CharField(max_length=100)
-    correo = models.CharField(max_length=50)
-    estaviendoanime = models.ForeignKey(Animes, on_delete=models.CASCADE, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        # Validar si el nombre de usuario ya existe antes de guardar
-        if Usuarios.objects.filter(usuario=self.usuario).exists():
-            raise ValidationError('El nombre de usuario ya existe. Por favor, elige otro nombre de usuario.')
+class Episodios(models.Model):
+    id_episodio = models.AutoField(primary_key=True)
+    nombre_episodio = models.CharField(max_length=100)
+    temporada = models.IntegerField(default=0)
+    episodio = models.IntegerField(default=0)
+    episodio_anime = models.ForeignKey(Animes, on_delete=models.CASCADE, null=True, blank=True)
 
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return self.nombre_episodio
 
+
+class Usuario(AbstractUser):
+    foto = models.ImageField(upload_to='fotos/', null=True, blank=True)
+    episodio = models.ForeignKey(Episodios, on_delete=models.CASCADE, null=True, blank=True)
+    is_superuser = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username

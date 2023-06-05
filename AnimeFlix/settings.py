@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'webapp.context_processors.animes'
             ],
         },
     },
@@ -100,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'webapp.Usuarios'
+AUTH_USER_MODEL = 'webapp.Usuario'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

@@ -129,9 +129,28 @@ header {
   background-color: #ff80ab;
   transform: scale(1.1);
 }
-/* Estilos para formularios*/
+/* Estilos para paginacion*/
 
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
 
+.pagination a,
+.pagination .current-page {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination .current-page {
+  font-weight: bold;
+  background-color: #ccc;
+}
 
 /* Estilos para pantallas pequeñas */
 @media only screen and (max-width: 600px) {

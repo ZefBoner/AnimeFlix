@@ -24,8 +24,7 @@
             </div>
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="/animes" class="nav-link">Animes</a></li>
-                <li><a href="#" class="nav-link">Cuenta</a></li>
+                <li><a href="/cuenta" class="nav-link">Cuenta</a></li>
             </ul>
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Buscar...">
@@ -48,12 +47,9 @@
         <aside class="sidebar" id="sidebar">
             <h2>Lista de Animes</h2>
             <ul class="sidebar-list">
-                <li><a href="#">Naruto</a></li>
-                <li><a href="#">Attack on Titan</a></li>
-                <li><a href="#">One Piece</a></li>
-                <li><a href="#">Fullmetal Alchemist</a></li>
-                <li><a href="#">Death Note</a></li>
-                <li><a href="#">Sailor Moon</a></li>
+                {% for anime in animes %}
+                <li><a href="{% url 'anime_detail' nombre_anime=anime.nombre_anime %}">{{ anime.nombre_anime }}</a></li>
+                {% endfor %}
             </ul>
         </aside>
         <section class="main-content">

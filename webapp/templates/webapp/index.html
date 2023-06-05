@@ -7,32 +7,29 @@
 	<h1>¡Bienvenido a Anime Multimedia!</h1>
 	<p>Disfruta de nuestro amplio catálogo de animes en alta calidad y con subtítulos en español.</p>
 	<div class="image-grid">
-		<div class="image-container">
-			<a href="{% url 'anime_detail' anime_id=1 %}">
-				<img src="https://via.placeholder.com/400x200" alt="Anime 1">
-				<p class="image-caption">Pie de imagen 1</p>
-			</a>
-		</div>
-		<div class="image-container">
-			<a href="{% url 'anime_detail' anime_id=2 %}">
-				<img src="https://via.placeholder.com/400x200" alt="Anime 2">
-				<p class="image-caption">Pie de imagen 2</p>
-			</a>
-		</div>
-		<div class="image-container">
-			<a href="{% url 'anime_detail' anime_id=3 %}">
-				<img src="https://via.placeholder.com/400x200" alt="Anime 3">
-				<p class="image-caption">Pie de imagen 3</p>
-			</a>
-		</div>	
+		{% for anime in animes %}
+			<div class="image-container">
+				<a href="{% url 'anime_detail' nombre_anime=anime.nombre_anime %}">
+					<img src="{% static '' %}{{ anime.imagen_anime }}" alt="{{ anime.nombre_anime }}">
+					<p class="image-caption">{{ anime.nombre_anime }}</p>
+				</a>
+			</div>
+		{% endfor %}
 	</div>
 	<div class="pagination">
-		<a href="/">Anterior</a>
-		<a href="/">1</a>
-		<a href="/pagina_2">2</a>
-		<a href="/pagina_3">3</a>
-		<a href="/pagina_2">Siguiente</a>
+		{% if animes.has_previous %}
+			<a href="?page={{ animes.previous_page_number }}">Anterior</a>
+		{% endif %}
+		{% for num in animes.paginator.page_range %}
+			{% if animes.number == num %}
+				<span class="current-page">{{ num }}</span>
+			{% else %}
+				<a href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+		{% endfor %}
+		{% if animes.has_next %}
+			<a href="?page={{ animes.next_page_number }}">Siguiente</a>
+		{% endif %}
 	</div>
 </section>
-
 {% endblock %}

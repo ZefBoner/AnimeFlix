@@ -44,7 +44,7 @@
 {% block content %}
 <section class="agregar-anime">
     <h2>Agregar un nuevo Anime</h2>
-    <form method="post" action="{% url 'agregar_anime' %}">
+    <form method="post" action="{% url 'agregar_anime' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="id_anime">ID del Anime:</label>
@@ -53,6 +53,26 @@
         <div class="form-group">
             <label for="nombre_anime">Nombre del Anime:</label>
             <input type="text" name="nombre_anime" id="nombre_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="descripcion_anime">Descripción del Anime:</label>
+            <input type="text" name="descripcion_anime" id="descripcion_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_imagen_anime">Nombre de la imagen del Anime:</label>
+            <input type="text" name="nombre_imagen_anime" id="nombre_imagen_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_portada_anime">Nombre de la portada del Anime:</label>
+            <input type="text" name="nombre_portada_anime" id="nombre_portada_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="imagen_anime">Imagen del Anime:</label>
+            <input type="file" name="imagen_anime" id="imagen_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="portada_anime">Portada del Anime:</label>
+            <input type="file" name="portada_anime" id="portada_anime" required>
         </div>
         <button type="submit">Agregar</button>
     </form>
@@ -63,13 +83,20 @@
         <tr>
             <th>Anime ID</th>
             <th>Nombre de Anime</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Portada</th>
         </tr>
         {% for anime in animes %}
         <tr>
             <td>{{ anime.id_anime }}</td>
             <td>{{ anime.nombre_anime }}</td>
+            <td>{{ anime.descripcion_anime }}</td>
+            <td>{{ anime.imagen_anime }}</td>
+            <td>{{ anime.portada_anime }}</td>
         </tr>
         {% endfor %}
     </table>
 </section>
 {% endblock %}
+

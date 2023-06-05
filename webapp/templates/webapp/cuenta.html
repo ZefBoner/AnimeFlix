@@ -1,0 +1,89 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/formularios.css' %}">
+<style>
+    /* Estilos para la ventana emergente */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        z-index: 1000;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Mostrar ventana emergente para cambiar la información
+        $(".btn-cambiar-informacion").click(function() {
+            var fieldName = $(this).data('field');
+            var fieldValue = $("#" + fieldName).text().trim();
+            $("#popup-informacion").show();
+            $("#id_field_name").val(fieldName);
+            $("#id_current_value").val(fieldValue);
+        });
+
+        // Cerrar ventana emergente
+        $(".popup-close").click(function() {
+            $(this).closest(".popup").hide();
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>Información de la cuenta</h2>
+        <p><strong>Usuario:</strong> <span id="username">{{ user.username }}</span> <button class="btn-cambiar-informacion" data-field="username">Cambiar</button></p>
+        <p><strong>Correo electrónico:</strong> <span id="correo">{{ user.email }}</span> <button class="btn-cambiar-informacion" data-field="correo">Cambiar</button></p>
+        <p><strong>Nombre:</strong> <span id="nombre">{{ user.first_name }}</span> <button class="btn-cambiar-informacion" data-field="nombre">Cambiar</button></p>
+        <p><strong>Apellido:</strong> <span id="apellido">{{ user.last_name }}</span> <button class="btn-cambiar-informacion" data-field="apellido">Cambiar</button></p>
+        <hr>
+        <h3>Cambiar información</h3>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+
+        <!-- Ventana emergente para cambiar la información -->
+        <div id="popup-informacion" class="popup">
+            <h3>Cambiar información</h3>
+            <form method="POST" action="{% url 'cuenta' %}">
+                {% csrf_token %}
+                <input type="hidden" id="id_field_name" name="field_name" value="">
+                <label for="id_current_value">Actual:</label>
+                <input type="text" id="id_current_value" name="current_value" value="" readonly>
+                <label for="id_new_value">Nueva:</label>
+                <input type="text" id="id_new_value" name="new_value" required>
+                <button type="submit">Guardar cambios</button>
+            </form>
+            <button class="popup-close">Cerrar</button>
+        </div>
+
+
+
+        <!-- Mostrar mensajes de error -->
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <script>
+            // Asignar valor actual al campo actual en el formulario del popup
+            $(".btn-cambiar-informacion").click(function() {
+                var fieldName = $(this).data('field');
+                var fieldValue = $("#" + fieldName).text().trim();
+                $("#popup-informacion").find("#id_current_value").val(fieldValue);
+            });
+        </script>
+
+    {% else %}
+        <p>No se ha iniciado sesión. <a href="{% url 'login' %}">Iniciar sesión</a></p>
+    {% endif %}
+{% endblock %}
