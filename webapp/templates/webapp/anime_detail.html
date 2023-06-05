@@ -2,10 +2,14 @@
 
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/formularios.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="anime-detail">
     <h2>{{ anime.nombre_anime }}</h2>
-    <p>ID del anime: {{ anime.id_anime }}</p>
+    <p>{{ anime.descripcion_anime }}</p>
     <!-- Agrega más información sobre el anime según tus necesidades -->
 </section>
 {% endblock %}
