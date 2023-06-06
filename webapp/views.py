@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model, upd
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Animes, Usuario
+from .models import *
 import os
 from django.core.paginator import Paginator
 from django.conf import settings
@@ -86,6 +86,49 @@ def agregar_anime(request):
     animes = Animes.objects.all()
 
     return render(request, 'webapp/agregar_anime.html', {'animes': animes})
+
+@user_passes_test(lambda u: u.is_superuser)  # Verificar si el usuario es un administrador
+@login_required  # Requiere que el usuario esté autenticado
+def agregar_apisodio(request):
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        id_episodio = request.POST['id_episodio']
+        nombre_episodio = request.POST['nombre_episodio']
+        nombre_miniatura = request.POST['nombre_miniatura']
+        temporada = request.POST['temporada']
+        episodio = request.POST['episodio']
+        imagen_anime = request.FILES['imagen_anime']
+        episodio = request.FILES['episodio']
+
+        # Guardar las imágenes en tu directorio local
+        imagen_anime_path = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'images', nombre_miniatura)
+        imagen_episodio_path = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'images', nombre_episodio)
+
+        with open(imagen_anime_path, 'wb') as f:
+            f.write(imagen_anime.read())
+
+        with open(imagen_episodio_path, 'wb') as f:
+            f.write(episodio.read())
+
+        # Obtener el anime seleccionado
+        anime_id = request.POST['anime']
+        anime = get_object_or_404(Animes, id_anime=anime_id)
+
+        # Crear el objeto Episodios y establecer la relación con el anime
+        episodio = Episodios(
+            id_episodio=id_episodio,
+            nombre_episodio=nombre_episodio,
+            temporada=temporada,
+            episodio=episodio,
+            episodio_anime=anime,
+            imagen_anime=os.path.join('images', nombre_miniatura),
+            imagen_episodio=os.path.join('images', nombre_episodio)
+        )
+        episodio.save()
+
+    animes = Animes.objects.all()
+    return render(request, 'webapp/agregar_episodios.html', {'animes': animes})
+
 
 def login_view(request):
     if request.method == 'POST':

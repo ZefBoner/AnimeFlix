@@ -1,0 +1,107 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/formularios.css' %}">
+<style>
+    /* Estilo para la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    
+    th {
+        background-color: #ff4081;
+        color: #fff;
+        font-weight: bold;
+        text-align: left;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    tr:hover {
+        background-color: #e6e6e6;
+    }
+    h2 {
+        text-align: center;
+        font-size: 24px;
+        color: #2e7d32; /* Color verde que combina */
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="agregar-anime">
+    <h2>Agregar un nuevo Anime</h2>
+    <form method="post" action="{% url 'agregar_apisodio' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_episodio">ID del Episodio:</label>
+            <input type="number" name="id_episodio" id="id_episodio" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_episodio">Nombre del Episodio:</label>
+            <input type="text" name="nombre_episodio" id="nombre_episodio" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_miniatura">Nombre de la miniatura del Episodio:</label>
+            <input type="text" name="nombre_miniatura" id="nombre_miniatura" required>
+        </div>
+        <div class="form-group">
+            <label for="temporada">Temporada:</label>
+            <input type="number" name="temporada" id="temporada" required>
+        </div>
+        <div class="form-group">
+            <label for="anime">Anime:</label>
+            <select name="anime" id="anime" required>
+                {% for anime in animes %}
+                <option value="{{ anime.id_anime }}">{{ anime.nombre_anime }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="imagen_anime">Imagen del Anime:</label>
+            <input type="file" name="imagen_anime" id="imagen_anime" required>
+        </div>
+        <div class="form-group">
+            <label for="imagen_episodio">Imagen del Episodio:</label>
+            <input type="file" name="imagen_episodio" id="imagen_episodio" required>
+        </div>
+        <button type="submit">Agregar</button>
+    </form>
+    
+    <!-- Mostrar los episodios existentes -->
+    <h2>Episodios existentes</h2>
+    <table>
+        <tr>
+            <th>ID del Episodio</th>
+            <th>Nombre del Episodio</th>
+            <th>Temporada</th>
+            <th>Episodio del Anime</th>
+            <th>Imagen del Anime</th>
+            <th>Imagen del Episodio</th>
+        </tr>
+        {% for episodio in episodios %}
+        <tr>
+            <td>{{ episodio.id_episodio }}</td>
+            <td>{{ episodio.nombre_episodio }}</td>
+            <td>{{ episodio.temporada }}</td>
+            <td>{{ episodio.episodio_anime.nombre_anime }}</td>
+            <td><img src="{% static episodio.imagen_anime %}" alt="{{ episodio.nombre_episodio }}"></td>
+            <td><img src="{% static episodio.imagen_episodio %}" alt="{{ episodio.nombre_episodio }}"></td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}
