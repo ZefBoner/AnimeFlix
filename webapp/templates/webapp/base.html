@@ -26,10 +26,6 @@
                 <li><a href="/" class="nav-link">Home</a></li>
                 <li><a href="/cuenta" class="nav-link">Cuenta</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Buscar...">
-                <button type="submit">Buscar</button>
-            </div>
             <div class="login">
                 {% if user.is_authenticated %}
                 <p>Bienvenido, {{ user.username }}</p>
