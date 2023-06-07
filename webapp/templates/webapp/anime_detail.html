@@ -10,6 +10,15 @@
 <section class="anime-detail">
     <h2>{{ anime.nombre_anime }}</h2>
     <p>{{ anime.descripcion_anime }}</p>
-    <!-- Agrega más información sobre el anime según tus necesidades -->
+    <div class="image-grid">
+      {% for anime in animes %}
+        <div class="image-container">
+          <a href="{% url 'anime_detail' nombre_anime=anime.nombre_anime %}">
+            <img src="{% static '' %}{{ anime.imagen_anime }}" alt="{{ anime.nombre_anime }}">
+            <p class="image-caption">{{ anime.nombre_anime }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
 </section>
 {% endblock %}

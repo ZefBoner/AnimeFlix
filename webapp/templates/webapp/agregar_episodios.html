@@ -55,6 +55,10 @@
             <input type="text" name="nombre_episodio" id="nombre_episodio" required>
         </div>
         <div class="form-group">
+            <label for="nombre_episodio">Nombre como se guardara el episodio con extension:</label>
+            <input type="text" name="extension" id="extension" required>
+        </div>
+        <div class="form-group">
             <label for="nombre_miniatura">Nombre de la miniatura del Episodio:</label>
             <input type="text" name="nombre_miniatura" id="nombre_miniatura" required>
         </div>
@@ -66,7 +70,7 @@
             <label for="anime">Anime:</label>
             <select name="anime" id="anime" required>
                 {% for anime in animes %}
-                <option value="{{ anime.id_anime }}">{{ anime.nombre_anime }}</option>
+                    <option value="{{ anime.id_anime }}">{{ anime.nombre_anime }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -75,8 +79,8 @@
             <input type="file" name="imagen_anime" id="imagen_anime" required>
         </div>
         <div class="form-group">
-            <label for="imagen_episodio">Imagen del Episodio:</label>
-            <input type="file" name="imagen_episodio" id="imagen_episodio" required>
+            <label for="imagen_episodio">Episodio:</label>
+            <input type="file" name="episodio" id="episodio" required>
         </div>
         <button type="submit">Agregar</button>
     </form>
@@ -88,7 +92,7 @@
             <th>ID del Episodio</th>
             <th>Nombre del Episodio</th>
             <th>Temporada</th>
-            <th>Episodio del Anime</th>
+            <th>Anime</th>
             <th>Imagen del Anime</th>
             <th>Imagen del Episodio</th>
         </tr>
@@ -98,8 +102,8 @@
             <td>{{ episodio.nombre_episodio }}</td>
             <td>{{ episodio.temporada }}</td>
             <td>{{ episodio.episodio_anime.nombre_anime }}</td>
-            <td><img src="{% static episodio.imagen_anime %}" alt="{{ episodio.nombre_episodio }}"></td>
-            <td><img src="{% static episodio.imagen_episodio %}" alt="{{ episodio.nombre_episodio }}"></td>
+            <td><img src="{% static episodio.ruta_imagen_episodio %}" alt="{{ episodio.ruta_imagen_episodio }}"></td>
+            <td><img src="{% static episodio.ruta_episodio %}" alt="{{ episodio.ruta_episodio }}"></td>
         </tr>
         {% endfor %}
     </table>

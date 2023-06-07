@@ -17,7 +17,8 @@ class Episodios(models.Model):
     id_episodio = models.AutoField(primary_key=True)
     nombre_episodio = models.CharField(max_length=100)
     temporada = models.IntegerField(default=0)
-    episodio = models.IntegerField(default=0)
+    ruta_imagen_episodio = models.CharField(max_length=50, default='no.jpg')
+    ruta_episodio = models.CharField(max_length=50, default='no.jpg')
     episodio_anime = models.ForeignKey(Animes, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

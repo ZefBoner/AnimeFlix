@@ -18,13 +18,14 @@ def webapp(request):
 
     page_number = request.GET.get('page')
     animes = paginator.get_page(page_number)
-
     return render(request, 'webapp/index.html', {'animes': animes})
 
 
 def anime_detail(request, nombre_anime):
     anime = get_object_or_404(Animes, nombre_anime=nombre_anime)
-    return render(request, 'webapp/anime_detail.html', {'anime': anime})
+    episodios = Episodios.objects.filter(episodio_anime=anime)
+    
+    return render(request, 'webapp/anime_detail.html', {'anime': anime, 'episodios': episodios})
 
 @login_required
 def cuenta(request):
@@ -54,6 +55,7 @@ def cuenta(request):
 @user_passes_test(lambda u: u.is_superuser)  # Verificar si el usuario es un administrador
 @login_required  # Requiere que el usuario esté autenticado
 def agregar_anime(request):
+    animes = Animes.objects.all()
     if request.method == 'POST':
         id_anime = request.POST['id_anime']
         nombre_anime = request.POST['nombre_anime']
@@ -83,26 +85,29 @@ def agregar_anime(request):
         )
         anime.save()
 
-    animes = Animes.objects.all()
+    
 
     return render(request, 'webapp/agregar_anime.html', {'animes': animes})
 
 @user_passes_test(lambda u: u.is_superuser)  # Verificar si el usuario es un administrador
 @login_required  # Requiere que el usuario esté autenticado
 def agregar_apisodio(request):
+    animes = Animes.objects.all()
     if request.method == 'POST':
         # Obtener los datos del formulario
         id_episodio = request.POST['id_episodio']
         nombre_episodio = request.POST['nombre_episodio']
+        nombre_episodio_extension = request.POST['extension']
         nombre_miniatura = request.POST['nombre_miniatura']
         temporada = request.POST['temporada']
-        episodio = request.POST['episodio']
+        anime_id = request.POST['anime']
         imagen_anime = request.FILES['imagen_anime']
         episodio = request.FILES['episodio']
+        anime = Animes.objects.get(id_anime=anime_id)
 
         # Guardar las imágenes en tu directorio local
         imagen_anime_path = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'images', nombre_miniatura)
-        imagen_episodio_path = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'images', nombre_episodio)
+        imagen_episodio_path = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'media', nombre_episodio_extension)
 
         with open(imagen_anime_path, 'wb') as f:
             f.write(imagen_anime.read())
@@ -110,24 +115,20 @@ def agregar_apisodio(request):
         with open(imagen_episodio_path, 'wb') as f:
             f.write(episodio.read())
 
-        # Obtener el anime seleccionado
-        anime_id = request.POST['anime']
-        anime = get_object_or_404(Animes, id_anime=anime_id)
-
         # Crear el objeto Episodios y establecer la relación con el anime
         episodio = Episodios(
             id_episodio=id_episodio,
             nombre_episodio=nombre_episodio,
             temporada=temporada,
-            episodio=episodio,
+            ruta_imagen_episodio=os.path.join('images', nombre_miniatura),
+            ruta_episodio=os.path.join('media', nombre_episodio_extension),
             episodio_anime=anime,
-            imagen_anime=os.path.join('images', nombre_miniatura),
-            imagen_episodio=os.path.join('images', nombre_episodio)
         )
         episodio.save()
 
-    animes = Animes.objects.all()
-    return render(request, 'webapp/agregar_episodios.html', {'animes': animes})
+    episodio = Episodios.objects.filter(episodio_anime=anime)
+
+    return render(request, 'webapp/agregar_episodios.html', {'animes': animes , 'episodios' : episodio})
 
 
 def login_view(request):
