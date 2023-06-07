@@ -247,7 +247,7 @@ header {
 
 .image-grid {
   display: grid;
-  grid-template-columns: 220px 220px 220px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 100px;
 }
 
