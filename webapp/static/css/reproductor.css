@@ -1,0 +1,67 @@
+.reproductor {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .reproductor h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .reproductor video {
+    width: 100%;
+    max-height: 500px;
+    margin-bottom: 20px;
+  }
+  
+  .reproductor p {
+    font-size: 18px;
+  }
+  
+  .reproductor video::-webkit-media-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+  }
+  
+  .reproductor video::-webkit-media-controls-play-button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+  }
+  
+  .reproductor video::-webkit-media-controls-volume-slider {
+    width: 100px;
+  }
+  
+  .reproductor video::-webkit-media-controls-timeline {
+    background-color: #fff;
+  }
+  
+  .reproductor video::-webkit-media-controls-current-time-display,
+  .reproductor video::-webkit-media-controls-time-remaining-display {
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .reproductor video::-webkit-media-controls-mute-button,
+  .reproductor video::-webkit-media-controls-fullscreen-button {
+    color: #fff;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .reproductor video::-webkit-media-controls-fullscreen-button {
+    margin-left: 10px;
+  }
+  

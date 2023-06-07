@@ -1,6 +1,8 @@
 {% extends 'webapp/base.html' %}
 {% load static %}
-
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/reproductor.css' %}">
+{% endblock %}
 {% block content %}
 <section class="reproductor">
     <h2>Reproductor de Video</h2>
