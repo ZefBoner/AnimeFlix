@@ -11,11 +11,11 @@
     <h2>{{ anime.nombre_anime }}</h2>
     <p>{{ anime.descripcion_anime }}</p>
     <div class="image-grid">
-      {% for anime in animes %}
+      {% for episodio in episodios %}
         <div class="image-container">
-          <a href="{% url 'anime_detail' nombre_anime=anime.nombre_anime %}">
-            <img src="{% static '' %}{{ anime.imagen_anime }}" alt="{{ anime.nombre_anime }}">
-            <p class="image-caption">{{ anime.nombre_anime }}</p>
+          <a href="{% url 'reproductor' episodio_id=episodio.id_episodio %}">
+            <img src="{% static '' %}{{ episodio.ruta_imagen_episodio }}" alt="{{ episodio.nombre_episodio }}">
+            <p class="image-caption">{{ episodio.nombre_episodio }}</p>
           </a>
         </div>
       {% endfor %}

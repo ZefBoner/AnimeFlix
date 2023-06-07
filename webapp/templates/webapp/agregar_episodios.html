@@ -44,7 +44,7 @@
 {% block content %}
 <section class="agregar-anime">
     <h2>Agregar un nuevo Anime</h2>
-    <form method="post" action="{% url 'agregar_apisodio' %}" enctype="multipart/form-data">
+    <form method="post" action="{% url 'agregar_episodio' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="id_episodio">ID del Episodio:</label>
@@ -93,8 +93,6 @@
             <th>Nombre del Episodio</th>
             <th>Temporada</th>
             <th>Anime</th>
-            <th>Imagen del Anime</th>
-            <th>Imagen del Episodio</th>
         </tr>
         {% for episodio in episodios %}
         <tr>
@@ -102,10 +100,8 @@
             <td>{{ episodio.nombre_episodio }}</td>
             <td>{{ episodio.temporada }}</td>
             <td>{{ episodio.episodio_anime.nombre_anime }}</td>
-            <td><img src="{% static episodio.ruta_imagen_episodio %}" alt="{{ episodio.ruta_imagen_episodio }}"></td>
-            <td><img src="{% static episodio.ruta_episodio %}" alt="{{ episodio.ruta_episodio }}"></td>
         </tr>
         {% endfor %}
-    </table>
+    </table>    
 </section>
 {% endblock %}

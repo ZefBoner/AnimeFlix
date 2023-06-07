@@ -27,6 +27,11 @@ def anime_detail(request, nombre_anime):
     
     return render(request, 'webapp/anime_detail.html', {'anime': anime, 'episodios': episodios})
 
+def reproductor(request, episodio_id):
+    episodio = get_object_or_404(Episodios, id_episodio=episodio_id)
+    
+    return render(request, 'webapp/reproductor.html', {'episodio': episodio})
+
 @login_required
 def cuenta(request):
     user = request.user
@@ -91,8 +96,10 @@ def agregar_anime(request):
 
 @user_passes_test(lambda u: u.is_superuser)  # Verificar si el usuario es un administrador
 @login_required  # Requiere que el usuario esté autenticado
-def agregar_apisodio(request):
+def agregar_episodio(request):
     animes = Animes.objects.all()
+    episodios = Episodios.objects.all()  # Valor predeterminado para la variable episodios
+
     if request.method == 'POST':
         # Obtener los datos del formulario
         id_episodio = request.POST['id_episodio']
@@ -126,9 +133,11 @@ def agregar_apisodio(request):
         )
         episodio.save()
 
-    episodio = Episodios.objects.filter(episodio_anime=anime)
+        episodios = Episodios.objects.filter(episodio_anime=anime)
+        return redirect('agregar_episodio')
+    return render(request, 'webapp/agregar_episodios.html', {'animes': animes, 'episodios': episodios})
 
-    return render(request, 'webapp/agregar_episodios.html', {'animes': animes , 'episodios' : episodio})
+
 
 
 def login_view(request):

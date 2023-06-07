@@ -1,10 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'webapp/base.html' %}
 {% load static %}
+
 {% block content %}
-<div class="video-player">
+<section class="reproductor">
+    <h2>Reproductor de Video</h2>
     <video controls>
-        <source src="{{ episodio_url }}" type="video/mp4">
-        Tu navegador no admite la reproducción de video HTML5.
+        <source src="{% static '' %}{{ episodio.ruta_episodio }}" type="video/mp4">
+        Tu navegador no admite la reproducción de video.
     </video>
-</div>
-{% endblock %}
+    <p>{{ episodio.nombre_episodio }}</p>
+</section>
+{% endblock %} 
