@@ -1,0 +1,31 @@
+{% extends 'webapp/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+  <div class="table-container">
+    <h2 class="text-center">Tabla de Animes</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Usuario</th>
+            <th scope="col">Anime</th>
+            <th scope="col">Fecha de Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for objeto in objetos %}
+          <tr>
+            <td>{{ objeto.user }}</td>
+            <td>{{ objeto.anime }}</td>
+            <td>{{ objeto.time }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
