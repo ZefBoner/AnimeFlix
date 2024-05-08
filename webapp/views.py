@@ -4,10 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
+from .bases import select, insert_values
 import os
 from django.core.paginator import Paginator
 from django.conf import settings
 from .forms import CambiarInformacionForm
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -24,7 +26,20 @@ def webapp(request):
 def anime_detail(request, nombre_anime):
     anime = get_object_or_404(Animes, nombre_anime=nombre_anime)
     episodios = Episodios.objects.filter(episodio_anime=anime)
+
+    # Obtener timestamp
+    timestamp = timezone.now()
+
+    # Obtener nombre de usuario si está logeado, de lo contrario, poner 'Anonimo'
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        username = 'Anonimo'
     
+    clic_anime = anime.nombre_anime
+    
+    insert_values(username, timestamp, clic_anime)
+
     return render(request, 'webapp/anime_detail.html', {'anime': anime, 'episodios': episodios})
 
 def reproductor(request, episodio_id):
@@ -169,13 +184,18 @@ def register_view(request):
             # Realizar las acciones necesarias para registrar al usuario
             # Crea una instancia de Usuarios y guarda los datos
             user = Usuario(username=username, first_name=nombre, last_name=apellido, email=email)
-            user.set_password(password)  # Establecer la contraseña utilizando set_password()
+            user.set_password(password) 
             user.save()
             messages.success(request, 'Registro exitoso. Inicia sesión con tu nueva cuenta.')
-            return redirect('login')  # Cambia 'login' con la URL de tu página de inicio de sesión
+            return redirect('login')  
 
     return render(request, 'webapp/register.html')
 
 def logout_view(request):
     logout(request)
-    return redirect('webapp')  # Cambia 'webapp' con la URL de tu página principal
+    return redirect('webapp')  
+
+def stats(request):
+    objetos = select()
+    return render(request, 'webapp/stats.html', {'objetos': objetos})
+
