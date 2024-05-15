@@ -11,6 +11,7 @@ urlpatterns = [
     path('cuenta/', views.cuenta, name='cuenta'),
     path('logout/', views.logout_view, name='logout'),
     path('accounts/login/', views.login_view, name='login'),
-    path('agregar_episodio/', views.agregar_episodio, name= 'agregar_episodio')
+    path('agregar_episodio/', views.agregar_episodio, name= 'agregar_episodio'),
+    path("stats/", views.stats, name="stats")
 
 ]

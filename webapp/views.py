@@ -8,6 +8,7 @@ import os
 from django.core.paginator import Paginator
 from django.conf import settings
 from .forms import CambiarInformacionForm
+from django.http import HttpResponse
 
 User = get_user_model()
 
@@ -179,3 +180,87 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('webapp')  # Cambia 'webapp' con la URL de tu página principal
+
+import psycopg2
+
+def con_psql():
+    host = "192.168.1.128"
+    db = "anime"
+    user = "azulito"
+    pwd = "1234"
+    conn = psycopg2.connect(
+    host = host,dbname= db,
+    user= user,password=pwd,port="5432"
+    )
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM anime;")
+
+    res = cur.fetchall()
+    print(res)
+
+    cur.close()
+    conn.close()
+
+    return res
+
+import mariadb
+
+def con_mariadb():
+    host = "192.168.1.145"
+    db = "time"
+    user = "azulito"
+    pwd = "1234"
+    conn = mariadb.connect(
+    host = host,
+    database= db,
+    user= user,
+    password= pwd,
+    port=3306
+    )
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM time;")
+
+    res = cur.fetchall()
+    print(res)
+
+    cur.close()
+    conn.close()
+
+    return res
+import pandas as pd
+import numpy as np
+
+def stats(request):
+    animes = con_psql()
+    df1 = pd.DataFrame(np.empty(0, dtype=[('id', 'int'), ('Anime', 'str')]))
+    df2 = pd.DataFrame(np.empty(0, dtype=[('id', 'int'), ('Time', 'str')]))
+
+    Anime = "Animes: \n"
+    i = 0
+    for anime in animes:
+        Anime = Anime + f"{str(anime[0])} - {anime[1]} \n"
+        df1.loc[i] = anime
+        i+=1
+    df1 = df1.set_index("id")
+
+    i = 0
+    times = con_mariadb()
+    Time = "Tiempo: \n"
+    for time in times:
+        Time = Time + f"{str(time[0])} - {time[1]}"
+        df2.loc[i] = time
+        i+=1
+
+    df2 = df2.set_index('id')
+    print(df1)
+    print(df2)
+
+    result = pd.concat([df1, df2], axis=1,join="inner")
+
+    print(result)
+    res = f"{Anime} \n {Time}"
+    
+    #return HttpResponse(res)
+    return HttpResponse(result.to_html())
