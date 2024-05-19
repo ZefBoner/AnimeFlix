@@ -183,9 +183,9 @@ def logout_view(request):
 
 import psycopg2
 
-def con_psql():
-    host = "192.168.1.128"
-    db = "anime"
+def con_psql(host = "192.168.1.128",db = "anime",query = "SELECT * FROM anime;"):
+    #host = "192.168.1.128"
+    #db = "anime"
     user = "azulito"
     pwd = "1234"
     conn = psycopg2.connect(
@@ -194,7 +194,9 @@ def con_psql():
     )
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM anime;")
+    #query = "SELECT * FROM anime;"
+    print("Query: \n",query)
+    cur.execute(query)
 
     res = cur.fetchall()
     print(res)
@@ -233,9 +235,24 @@ import pandas as pd
 import numpy as np
 
 def stats(request):
-    animes = con_psql()
+    try:
+        animes = con_psql("localhost","usuarios","""
+        select * from dblink('dbname = anime hostaddr = 127.168.1.128
+        user = azulito password = 1234',
+        'select * from anime')
+        as t1(id integer, nombre varchar);
+        """)
+    except:
+        animes = []
+
+    try:
+        usuarios = con_psql("localhost","usuarios","select * from usuarios;")
+    except:
+        usuarios = []
     df1 = pd.DataFrame(np.empty(0, dtype=[('id', 'int'), ('Anime', 'str')]))
     df2 = pd.DataFrame(np.empty(0, dtype=[('id', 'int'), ('Time', 'str')]))
+    df3 = pd.DataFrame(np.empty(0, dtype=[('id', 'int'), ('Usuario', 'str')]))
+    
 
     Anime = "Animes: \n"
     i = 0
@@ -245,8 +262,18 @@ def stats(request):
         i+=1
     df1 = df1.set_index("id")
 
+    i=0
+    for user in usuarios:
+        #Anime = Anime + f"{str(anime[0])} - {anime[1]} \n"
+        df3.loc[i] = user
+        i+=1
+    df3 = df3.set_index("id")
+
     i = 0
-    times = con_mariadb()
+    try:
+        times = con_mariadb()
+    except:
+        times = []
     Time = "Tiempo: \n"
     for time in times:
         Time = Time + f"{str(time[0])} - {time[1]}"
@@ -257,7 +284,9 @@ def stats(request):
     print(df1)
     print(df2)
 
-    result = pd.concat([df1, df2], axis=1,join="inner")
+    #result = pd.concat([df1, df2], axis=1,join="inner")
+    result = pd.merge(df3,df1,how="left",left_index=True,right_index=True)
+    result = pd.merge(result,df2,how="left",left_index=True,right_index=True)
 
     print(result)
     res = f"{Anime} \n {Time}"
